@@ -39,7 +39,7 @@ uint32_t delayMS;
 // Setup a oneWire instance to communicate with any OneWire device
 OneWire oneWire(ONE_WIRE_BUS);
 
-// Pass oneWire reference to DallasTemperature library
+// Pass oneWire reference to DallasTemperature library.
 DallasTemperature sensors(&oneWire);
 
 void setup()
