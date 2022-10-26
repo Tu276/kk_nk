@@ -62,8 +62,93 @@ void setup()
     Serial.print("InfluxDB connection failed: ");
     Serial.println(client.getLastErrorMessage());
   }
+
+  // Add tags to the data point
+  sensor.addTag("device", DEVICE);
+  sensor.addTag("SSID", WiFi.SSID());
 }
-void loop() {}
+void loop()
+{
+  // Clear fields for reusing the point. Tags will remain the same as set above.
+  sensor.clearFields();
+
+  // Store measured value into point
+  // Report RSSI of currently connected network
+  sensor.addField("rssi", WiFi.RSSI());
+
+  // Print what are we exactly writing
+  Serial.print("Writing: ");
+  Serial.println(sensor.toLineProtocol());
+
+  // Check WiFi connection and reconnect if needed
+  if (wifiMulti.run() != WL_CONNECTED)
+  {
+    Serial.println("Wifi connection lost");
+  }
+
+  // Write point
+  if (!client.writePoint(sensor))
+  {
+    Serial.print("InfluxDB write failed: ");
+    Serial.println(client.getLastErrorMessage());
+  }
+
+  Serial.println("Waiting 1 second");
+  delay(1000);
+
+  // ... flux query
+
+  // Query will find the RSSI values for last minute for each connected WiFi network with this device
+  String query = "from(bucket: \"sample-bucket\")\n\
+  |> range(start: -1m)\n\
+  |> filter(fn: (r) => r._measurement == \"wifi_status\" and r._field == \"rssi\")";
+
+  // Print composed query
+  Serial.println("Querying for RSSI values written to the \"sample-bucket\" bucket in the last 1 min... ");
+  Serial.println(query);
+
+  // Send query to the server and get result
+  FluxQueryResult result = client.query(query);
+
+  Serial.println("Results : ");
+  // Iterate over rows.
+  while (result.next())
+  {
+    // Get converted value for flux result column 'SSID'
+    String ssid = result.getValueByName("SSID").getString();
+    Serial.print("SSID '");
+    Serial.print(ssid);
+
+    Serial.print("' with RSSI ");
+    // Get value of column named '_value'
+    long value = result.getValueByName("_value").getLong();
+    Serial.print(value);
+
+    // Get value for the _time column
+    FluxDateTime time = result.getValueByName("_time").getDateTime();
+
+    String timeStr = time.format("%F %T");
+
+    Serial.print(" at ");
+    Serial.print(timeStr);
+
+    Serial.println();
+  }
+
+  // Report any error
+  if (result.getError() != "")
+  {
+    Serial.print("Query result error: ");
+    Serial.println(result.getError());
+  }
+
+  // Close the result
+  result.close();
+
+  Serial.println("==========");
+
+  delay(5000);
+}
 
 // // DHT Temperature & Humidity Sensor
 // // Unified Sensor Library Examples
