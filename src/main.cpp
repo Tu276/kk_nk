@@ -19,7 +19,7 @@ ESP8266WiFiMulti wifiMulti;
 #define INFLUXDB_URL "https://eastus-1.azure.cloud2.influxdata.com"
 #define INFLUXDB_TOKEN "CRzxyq-yuAjoE88OAug6zsKLDe-3_6pXNX_Eq1gNGCo0aO2EhSB3CKHDhJPNo-VvxmMKfctMPNglnnjzGnDaIA=="
 #define INFLUXDB_ORG "0144ab1e8021e8f0"
-#define INFLUXDB_BUCKET "YOUR_BUCKET"
+#define INFLUXDB_BUCKET "kk_nk"
 
 // Time zone info
 #define TZ_INFO "UTC3"
@@ -97,14 +97,15 @@ void loop()
   delay(1000);
 
   // ... flux query
+  // n this query, we are looking for data points within the last 1 minute with a measurement of "wifi_status".
 
   // Query will find the RSSI values for last minute for each connected WiFi network with this device
-  String query = "from(bucket: \"sample-bucket\")\n\
+  String query = "from(bucket: \"kk_nk\")\n\
   |> range(start: -1m)\n\
   |> filter(fn: (r) => r._measurement == \"wifi_status\" and r._field == \"rssi\")";
 
   // Print composed query
-  Serial.println("Querying for RSSI values written to the \"sample-bucket\" bucket in the last 1 min... ");
+  Serial.println("Querying for RSSI values written to the \"kk_nk\" bucket in the last 1 min... ");
   Serial.println(query);
 
   // Send query to the server and get result
@@ -144,6 +145,64 @@ void loop()
 
   // Close the result
   result.close();
+
+  Serial.println("==========");
+
+  delay(5000);
+
+  /// In this example, we use the mean() function to calculate the average value of data points in the last 1 minute.
+  //
+  //
+
+  // ... code from Write Data step
+
+  // Query will find the min RSSI value for last minute for each connected WiFi network with this device
+  String aggregate_query = "from(bucket: \"kk_nk\")\n\
+  |> range(start: -1m)\n\
+  |> filter(fn: (r) => r._measurement == \"wifi_status\")\n\
+  |> min()";
+
+  // Print composed query
+  Serial.println("Querying for the mean RSSI value written to the \"kk_nk\" bucket in the last 1 min... ");
+  Serial.println(aggregate_query);
+
+  // Send query to the server and get result
+  FluxQueryResult aggregate_result = client.query(aggregate_query);
+
+  Serial.println("Result : ");
+  // Iterate over rows.
+  while (aggregate_result.next())
+  {
+    // Get converted value for flux result column 'SSID'
+    String ssid = aggregate_result.getValueByName("SSID").getString();
+    Serial.print("SSID '");
+    Serial.print(ssid);
+
+    Serial.print("' with RSSI ");
+    // Get value of column named '_value'
+    long value = aggregate_result.getValueByName("_value").getLong();
+    Serial.print(value);
+
+    // Get value for the _time column
+    FluxDateTime time = aggregate_result.getValueByName("_time").getDateTime();
+
+    String timeStr = time.format("%F %T");
+
+    Serial.print(" at ");
+    Serial.print(timeStr);
+
+    Serial.println();
+  }
+
+  // Report any error
+  if (aggregate_result.getError() != "")
+  {
+    Serial.print("Query result error: ");
+    Serial.println(aggregate_result.getError());
+  }
+
+  // Close the result
+  aggregate_result.close();
 
   Serial.println("==========");
 
