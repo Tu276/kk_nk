@@ -12,9 +12,9 @@ ESP8266WiFiMulti wifiMulti;
 #include <InfluxDbCloud.h>
 
 // WiFi AP SSID
-#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_SSID "James"
 // WiFi password
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#define WIFI_PASSWORD "kirimijk"
 
 #define INFLUXDB_URL "https://eastus-1.azure.cloud2.influxdata.com"
 #define INFLUXDB_TOKEN "CRzxyq-yuAjoE88OAug6zsKLDe-3_6pXNX_Eq1gNGCo0aO2EhSB3CKHDhJPNo-VvxmMKfctMPNglnnjzGnDaIA=="
