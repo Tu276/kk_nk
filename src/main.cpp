@@ -1,7 +1,16 @@
 // DHT Temperature & Humidity Sensor
 // Unified Sensor Library Examples
 
+#ifdef ESP32
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <SPIFFS.h>
+#else
+
+#endif
+
 #include <Arduino.h>
+#include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include <DHT_U.h>
