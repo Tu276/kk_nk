@@ -24,15 +24,20 @@ DHT dht(DHTPin, DHTTYPE);
 float temperature_Celsius;
 float humidity;
 
-#define WIFI_SSID "PTCL-08"
-#define WIFI_PASSWORD "44332211"
-#define INFLUXDB_URL "https://europe-west1-1.gcp.cloud2.influxdata.com"
-#define INFLUXDB_TOKEN "r7UgtNaHKUXt75gDODrC9oXCKhG7eNuQSANkItAvfCebhrTPUvVeJn4RxWsre_CCrgEfmt29hcu09InpzUB09A=="
-#define INFLUXDB_ORG "hamnaathar95@gmail.com"
-#define INFLUXDB_BUCKET "ESP32"
+/// network credentials as variables for board internet access
 
-// Set timezone string according to https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
-#define TZ_INFO "PKT-5"
+// WiFi AP SSID
+#define WIFI_SSID "James"
+// WiFi password
+#define WIFI_PASSWORD "kirimijk"
+
+#define INFLUXDB_URL "https://eastus-1.azure.cloud2.influxdata.com"
+#define INFLUXDB_TOKEN "kj9FAI4Ng5XrAynQys1BKfsf1lQ4hzd5mI4rdYRt3g3vLY2VDNL90HHkN4vGM6p32WXxSyNaKD2N0NVLdn_huQ=="
+#define INFLUXDB_ORG "0144ab1e8021e8f0"
+#define INFLUXDB_BUCKET "kk_nk"
+
+// Time zone info
+#define TZ_INFO "UTC3"
 
 // InfluxDB client instance with preconfigured InfluxCloud certificate
 InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert);
