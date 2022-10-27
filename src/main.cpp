@@ -18,7 +18,7 @@ ESP8266WiFiMulti wifiMulti;
 //#define DHTTYPE DHT21 // DHT 21 (AM2301)
 #define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
 
-uint8_t DHTPin = 14;
+uint8_t DHTPin = 25;
 DHT dht(DHTPin, DHTTYPE);
 
 float temperature_Celsius;
