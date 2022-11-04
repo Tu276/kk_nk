@@ -1,7 +1,11 @@
+
 #include <Wire.h>
 #include "DHT.h"
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
+#include <DallasTemperature.h>
+
+#include <OneWire.h>
 
 #if defined(ESP32)
 #include <WiFiMulti.h>
@@ -18,6 +22,11 @@ ESP8266WiFiMulti wifiMulti;
 //#define DHTTYPE DHT21 // DHT 21 (AM2301)
 #define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
 
+// ds18b20 sensor
+#define ONE_WIRE_BUS 26
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
 uint8_t DHTPin = 25;
 DHT dht(DHTPin, DHTTYPE);
 
@@ -27,9 +36,9 @@ float humidity;
 /// network credentials as variables for board internet access
 
 // WiFi AP SSID
-#define WIFI_SSID "James"
+#define WIFI_SSID "Laura S"
 // WiFi password
-#define WIFI_PASSWORD "kirimijk"
+#define WIFI_PASSWORD "norahbango19"
 
 #define INFLUXDB_URL "https://eastus-1.azure.cloud2.influxdata.com"
 #define INFLUXDB_TOKEN "kj9FAI4Ng5XrAynQys1BKfsf1lQ4hzd5mI4rdYRt3g3vLY2VDNL90HHkN4vGM6p32WXxSyNaKD2N0NVLdn_huQ=="
