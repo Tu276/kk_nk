@@ -18,8 +18,8 @@ ESP8266WiFiMulti wifiMulti;
 #endif
 
 // Uncomment one of the lines below for whatever DHT sensor type you're using!
-//#define DHTTYPE DHT11 // DHT 11
-//#define DHTTYPE DHT21 // DHT 21 (AM2301)
+// #define DHTTYPE DHT11 // DHT 11
+// #define DHTTYPE DHT21 // DHT 21 (AM2301)
 #define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
 
 // ds18b20 sensor
@@ -30,15 +30,15 @@ DallasTemperature sensors(&oneWire);
 uint8_t DHTPin = 25;
 DHT dht(DHTPin, DHTTYPE);
 
-float temperature_Celsius;
+float temperature_Celsius; // ambient
 float humidity;
-
+float temperature_Celcius2; // contact
 /// network credentials as variables for board internet access
 
 // WiFi AP SSID
-#define WIFI_SSID "Laura S"
+#define WIFI_SSID "iPIC-WIRELESS" //"vibration"
 // WiFi password
-#define WIFI_PASSWORD "norahbango19"
+#define WIFI_PASSWORD "987654321jica" //"vibration98"
 
 #define INFLUXDB_URL "https://eastus-1.azure.cloud2.influxdata.com"
 #define INFLUXDB_TOKEN "kj9FAI4Ng5XrAynQys1BKfsf1lQ4hzd5mI4rdYRt3g3vLY2VDNL90HHkN4vGM6p32WXxSyNaKD2N0NVLdn_huQ=="
@@ -59,6 +59,7 @@ void setup()
   Serial.begin(115200);
   pinMode(DHTPin, INPUT);
   dht.begin();
+  sensors.begin();
   WiFi.mode(WIFI_STA);
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to wifi");
@@ -92,11 +93,15 @@ void loop()
   // Store measured values into points
   sensor.clearFields();
 
+  sensors.requestTemperatures();
+
   humidity = dht.readHumidity();
   temperature_Celsius = dht.readTemperature();
+  temperature_Celcius2 = sensors.getTempCByIndex(0);
 
   sensor.addField("Temperature", temperature_Celsius);
   sensor.addField("Humidity", humidity);
+  sensor.addField("Bearing", temperature_Celcius2);
 
   Serial.print("Writing: ");
   Serial.println(client.pointToLineProtocol(sensor));
@@ -114,5 +119,5 @@ void loop()
   }
   Serial.println("");
   Serial.println("Delay 10s");
-  delay(10000);
+  delay(2000);
 }
