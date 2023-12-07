@@ -118,6 +118,6 @@ void loop()
     Serial.println(client.getLastErrorMessage());
   }
   Serial.println("");
-  Serial.println("Delay 10s");
+  Serial.println("Delay 5s");
   delay(2000);
 }

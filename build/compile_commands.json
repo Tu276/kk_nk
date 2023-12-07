@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/ruthotoki/Nathan/kk_nk/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/cc  -I/Users/ruthotoki/Nathan/kk_nk/.pio/libdeps/nodemcu-32s/Unity/src -I/Users/ruthotoki/Nathan/kk_nk/build -g -std=c11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -o CMakeFiles/unity.dir/src/unity.c.o -c /Users/ruthotoki/Nathan/kk_nk/.pio/libdeps/nodemcu-32s/Unity/src/unity.c",
+  "file": "/Users/ruthotoki/Nathan/kk_nk/.pio/libdeps/nodemcu-32s/Unity/src/unity.c",
+  "output": "CMakeFiles/unity.dir/src/unity.c.o"
+}
+]

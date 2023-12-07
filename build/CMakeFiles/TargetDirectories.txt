@@ -1,0 +1,7 @@
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/unity.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/edit_cache.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/rebuild_cache.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/list_install_components.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/install.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/install/local.dir
+/Users/ruthotoki/Nathan/kk_nk/build/CMakeFiles/install/strip.dir
